@@ -4,7 +4,6 @@ using ShopTARpe25.Core.Dto;
 using ShopTARpe25.Core.ServiceInterface;
 using ShopTARpe25.Data;
 
-
 namespace ShopTARpe25.ApplicationServices.Services
 {
 
@@ -74,5 +73,21 @@ namespace ShopTARpe25.ApplicationServices.Services
 
             return spaceship;
         }
+        public async Task<Spaceship> Delete(SpaceshipDto dto)
+        {
+            var spaceship = await _context.Spaceships
+                .FirstOrDefaultAsync(x => x.Id == dto.Id);
+
+            if (spaceship == null)
+            {
+                return null;
+            }
+
+            _context.Spaceships.Remove(spaceship);
+            await _context.SaveChangesAsync();
+
+            return spaceship;
+        }
     }
 }
+
