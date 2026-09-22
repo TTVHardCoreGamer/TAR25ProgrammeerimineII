@@ -181,7 +181,6 @@ namespace ShopTARpe25.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmation(Guid id)
         {
-
             var result = await _spaceshipService.Delete(id);
 
             if (result == null)  
