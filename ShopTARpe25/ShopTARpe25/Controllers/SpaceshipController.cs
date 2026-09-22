@@ -179,18 +179,14 @@ namespace ShopTARpe25.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(SpaceshipDeleteViewModel vm)
+        public async Task<IActionResult> DeleteConfirmation(Guid id)
         {
-            var dto = new SpaceshipDto()
-            {
-                Id = vm.Id
-            };
 
-            var result = await _spaceshipService.Delete(dto);
+            var result = await _spaceshipService.Delete(id);
 
-            if (result == null)
+            if (result == null)  
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return RedirectToAction(nameof(Index));

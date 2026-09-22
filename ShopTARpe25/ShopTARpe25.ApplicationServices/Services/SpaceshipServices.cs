@@ -73,10 +73,10 @@ namespace ShopTARpe25.ApplicationServices.Services
 
             return spaceship;
         }
-        public async Task<Spaceship> Delete(SpaceshipDto dto)
+        public async Task<Spaceship> Delete(Guid id)
         {
             var spaceship = await _context.Spaceships
-                .FirstOrDefaultAsync(x => x.Id == dto.Id);
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (spaceship == null)
             {
