@@ -1,0 +1,16 @@
+@model ShopTARpe25.Models.Kindergarten.KindergartenDeleteViewModel
+
+<div class="h1">Kindergarten Delete</div>
+
+<div>
+    <p><b>Group Name:</b> @Model.GroupName</p>
+    <p><b>Children Count:</b> @Model.ChildrenCount</p>
+    <p><b>Kindergarten Name:</b> @Model.KindergartenName</p>
+    <p><b>Teacher Name:</b> @Model.TeacherName</p>
+</div>
+
+<form asp-action="DeleteConfirmation" asp-controller="Kindergarten" method="post">
+    <input asp-for="Id" type="hidden" />
+    <input type="submit" class="btn btn-danger" value="Delete" />
+    <a asp-action="Index" asp-controller="Kindergarten" class="btn btn-secondary">Back to List</a>
+</form>

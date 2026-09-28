@@ -1,0 +1,14 @@
+@model ShopTARpe25.Models.Kindergarten.KindergartenDetailsViewModel
+
+<div class="h1">Kindergarten Details</div>
+
+<div>
+    <p><b>Group Name:</b> @Model.GroupName</p>
+    <p><b>Children Count:</b> @Model.ChildrenCount</p>
+    <p><b>Kindergarten Name:</b> @Model.KindergartenName</p>
+    <p><b>Teacher Name:</b> @Model.TeacherName</p>
+    <p><b>Created At:</b> @Model.CreatedAt</p>
+    <p><b>Updated At:</b> @Model.UpdatedAt</p>
+</div>
+
+<a asp-action="Index" asp-controller="Kindergarten" class="btn btn-secondary">Back to List</a>

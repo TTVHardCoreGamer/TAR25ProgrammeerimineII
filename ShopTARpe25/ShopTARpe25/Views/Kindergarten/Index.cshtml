@@ -1,0 +1,44 @@
+@model IEnumerable<ShopTARpe25.Models.Kindergarten.KindergartenIndexViewModel>
+
+@{
+    int rowNumber = 1;
+}
+
+<div>
+    <a asp-action="Create" asp-controller="Kindergarten" class="btn btn-primary">Create</a>
+</div>
+
+<div class="h1">
+    Kindergarten
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Nr</th>
+            <th>Group Name</th>
+            <th>Children Count</th>
+            <th>Kindergarten Name</th>
+            <th>Teacher Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kindergarten in Model)
+        {
+            <tr>
+                <td>@rowNumber</td>
+                <td>@kindergarten.GroupName</td>
+                <td>@kindergarten.ChildrenCount</td>
+                <td>@kindergarten.KindergartenName</td>
+                <td>@kindergarten.TeacherName</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-info">Details</a>
+                    <a asp-action="Update" asp-controller="Kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-success">Update</a>
+                    <a asp-action="Delete" asp-controller="Kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            rowNumber++;
+        }
+    </tbody>
+</table>
