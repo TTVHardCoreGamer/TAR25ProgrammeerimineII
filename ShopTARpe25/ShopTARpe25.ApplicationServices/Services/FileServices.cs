@@ -55,7 +55,12 @@ namespace ShopTARpe25.ApplicationServices.Services
                         {
                             //tuleb ära mappida 
                             //domain ja ??
+                            Id = Guid.NewGuid(),
+                            ExsistingFilePath = uniqueFileName,
+                            SpaceshipId = domain.Id
                         };
+
+                        _context.FileToApis.AddAsync(path);
                     }
                 }
             }
