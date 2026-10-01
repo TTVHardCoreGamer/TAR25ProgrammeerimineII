@@ -16,7 +16,7 @@ namespace ShopTARpe25.Core.Dto
         public int? EnginePower { get; set; }
 
         public List<IFormFile> Files { get; set; }
-        public IEnumerable<FileToApiDto> fileToApiDtos { get; set; }
+        public IEnumerable<FileToApiDto> FileToApiDtos { get; set; }
             = new List<FileToApiDto>();
 
         public DateTime? CreatedAt { get; set; }

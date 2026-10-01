@@ -11,14 +11,17 @@ namespace ShopTARpe25.ApplicationServices.Services
     public class SpaceshipServices : ISpaceshipServices
     {
         private readonly ShopTARpe25Context _context;
+        private readonly IFileServices _fileServices;
 
         public SpaceshipServices
             (
-                ShopTARpe25Context context
+                ShopTARpe25Context context,
+                IFileServices fileServices
             )
         {
             _context = context;
-        }
+            _fileServices = fileServices;
+        }   
 
         public async Task<Spaceship> Create(SpaceshipDto dto)
         {
@@ -32,6 +35,12 @@ namespace ShopTARpe25.ApplicationServices.Services
             domain.EnginePower = dto.EnginePower;
             domain.CreatedAt = DateTime.Now;
             domain.ModifiedAt = DateTime.Now;
+            //peame saama File teenusest välja kutsuda,
+            //mis salvestab failid serverisse
+            _fileServices.FilesToApi(dto, domain);
+
+
+
 
             //siia tuleb kood, mis salvestab domain
             //objekti andmebaasi
@@ -46,7 +55,7 @@ namespace ShopTARpe25.ApplicationServices.Services
         }
 
         //siia teha meetod nimega DetailsAsync
-        //see ainult p'rib andmed contextist
+        //see ainult pärib andmed contextist
         public async Task<Spaceship> DetailsAsync(Guid id)
         {
             var result = await _context.Spaceships
