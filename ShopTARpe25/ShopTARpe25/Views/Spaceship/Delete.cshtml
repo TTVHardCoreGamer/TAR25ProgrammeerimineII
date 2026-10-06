@@ -1,7 +1,5 @@
 ﻿@model ShopTARpe25.Models.Spaceship.SpaceshipDeleteViewModel
 
-See on Delete vaade ja samasugune nagu details vaade. Teha ise valmis
-
 <h1>Delete</h1>
 
 <div>
@@ -63,6 +61,12 @@ See on Delete vaade ja samasugune nagu details vaade. Teha ise valmis
             @Html.DisplayFor(model => model.ModifiedAt)
         </div>
     </dl>
+
+    @foreach (var images in Model.Images)
+    {
+        <partial name="_Images" model="images" />
+        <br />
+    }
 
     <hr />
     <form asp-action="DeleteConfirmation">
