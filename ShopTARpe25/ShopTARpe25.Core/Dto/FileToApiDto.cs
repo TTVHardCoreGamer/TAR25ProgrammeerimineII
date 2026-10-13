@@ -5,7 +5,7 @@
         public Guid Id { get; set; }
 
         //see muutuja hakkab näitama, kus asub meie file
-        public string? ExsistingFilePath { get; set; }
+        public string? ExistingFilePath { get; set; }
         public Guid? SpaceshipId { get; set; }
     }
 }

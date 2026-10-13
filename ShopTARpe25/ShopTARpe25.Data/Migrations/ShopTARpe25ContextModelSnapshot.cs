@@ -28,7 +28,7 @@ namespace ShopTARpe25.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ExsistingFilePath")
+                    b.Property<string>("ExistingFilePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("SpaceshipId")

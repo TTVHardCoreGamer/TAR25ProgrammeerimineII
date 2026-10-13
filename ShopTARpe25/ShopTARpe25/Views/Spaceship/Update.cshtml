@@ -43,16 +43,22 @@
             </div>
         </div>
 
+        <div class="form-group row">
+            <label asp-for="Files" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-5">
+                <input asp-for="Files" class="form-control" type="file" multiple />
+            </div>
+        </div>
+
         @foreach (var file in Model.Images)
         {
             <partial name="_Images" model="file" />
             <input asp-action="removeImage" asp-controller="spaceship" asp-route-imageId="@file.ImageId"
-                  type="submit" class="btn btn-danger" value="Remove Image" />
-
+                type="submit" class="btn btn-danger" value="Remove Image" />
         }
 
         <input asp-action="Update" asp-controller="spaceship" type="submit" class="btn btn-success" value="Update" />
-        <a asp-action="Index" asp-controller="spaceship" type="submit" class="btn btn-info">Back to List</a>
+        <a asp-action="Index" asp-controller="spaceship" class="btn btn-info">Back to List</a>
 
     </form>
 </div>
