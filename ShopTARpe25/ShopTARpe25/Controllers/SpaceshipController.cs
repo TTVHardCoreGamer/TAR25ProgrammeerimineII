@@ -53,7 +53,7 @@ namespace ShopTARpe25.Controllers
         {
             SpaceshipCreateUpdateViewModel vm = new();
 
-            return View(vm);
+            return View("CreateUpdate", vm);
         }
 
         //kui oled teinud vormi, siis see meetod käivitatakse
@@ -89,7 +89,7 @@ namespace ShopTARpe25.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -125,7 +125,6 @@ namespace ShopTARpe25.Controllers
             vm.Id = spaceship.Id;
             vm.Name = spaceship.Name;
             vm.Classification = spaceship.Classification;
-
             vm.BuiltDate = spaceship.BuiltDate;
             vm.Crew = spaceship.Crew;
             vm.EnginePower = spaceship.EnginePower;
