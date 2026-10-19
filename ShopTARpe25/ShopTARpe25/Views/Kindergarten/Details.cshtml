@@ -11,4 +11,9 @@
     <p><b>Updated At:</b> @Model.UpdatedAt</p>
 </div>
 
+@foreach (var image in Model.Images)
+{
+    <img src="~/multipleFileUpload/@image.FilePath" alt="Kindergarten pilt" style="max-width: 220px; max-height: 180px; margin: 8px;" />
+}
+
 <a asp-action="Index" asp-controller="Kindergarten" class="btn btn-secondary">Back to List</a>

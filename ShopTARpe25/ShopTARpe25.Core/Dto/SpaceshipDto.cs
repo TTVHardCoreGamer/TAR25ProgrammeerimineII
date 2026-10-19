@@ -13,6 +13,8 @@ namespace ShopTARpe25.Core.Dto
         public DateTime? BuiltDate { get; set; }
         public int? Crew { get; set; }
         public int? EnginePower { get; set; }
+        public List<Microsoft.AspNetCore.Http.IFormFile>? Files { get; set; }
+        public FileToApiDto[] FileToApiDtos { get; set; } = Array.Empty<FileToApiDto>();
 
         public DateTime? CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }

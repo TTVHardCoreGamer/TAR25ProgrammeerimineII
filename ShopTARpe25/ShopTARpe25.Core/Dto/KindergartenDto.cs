@@ -9,5 +9,7 @@ namespace ShopTARpe25.Core.Dto
         public string TeacherName { get; set; } = string.Empty;
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public List<Microsoft.AspNetCore.Http.IFormFile>? Files { get; set; }
+        public FileToApiDto[] FileToApiDtos { get; set; } = Array.Empty<FileToApiDto>();
     }
 }

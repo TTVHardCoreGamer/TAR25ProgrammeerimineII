@@ -9,6 +9,11 @@
     <p><b>Teacher Name:</b> @Model.TeacherName</p>
 </div>
 
+@foreach (var image in Model.Images)
+{
+    <img src="~/multipleFileUpload/@image.FilePath" alt="Kindergarten pilt" style="max-width: 220px; max-height: 180px; margin: 8px;" />
+}
+
 <form asp-action="DeleteConfirmation" asp-controller="Kindergarten" method="post">
     <input asp-for="Id" type="hidden" />
     <input type="submit" class="btn btn-danger" value="Delete" />

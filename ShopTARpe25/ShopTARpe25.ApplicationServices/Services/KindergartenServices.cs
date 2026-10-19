@@ -9,10 +9,12 @@ namespace ShopTARpe25.ApplicationServices.Services
     public class KindergartenServices : IKindergartenServices
     {
         private readonly ShopTARpe25Context _context;
+        private readonly IFileServices _fileService;
 
-        public KindergartenServices(ShopTARpe25Context context)
+        public KindergartenServices(ShopTARpe25Context context, IFileServices fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
 
         public async Task<Kindergarten> Create(KindergartenDto dto)
@@ -29,6 +31,7 @@ namespace ShopTARpe25.ApplicationServices.Services
 
             await _context.Kindergartens.AddAsync(domain);
             await _context.SaveChangesAsync();
+            _fileService.FilesToApi(dto, domain);
 
             return domain;
         }
@@ -55,6 +58,7 @@ namespace ShopTARpe25.ApplicationServices.Services
 
             _context.Kindergartens.Update(kindergarten);
             await _context.SaveChangesAsync();
+            _fileService.FilesToApi(dto, kindergarten);
 
             return kindergarten;
         }
@@ -68,6 +72,14 @@ namespace ShopTARpe25.ApplicationServices.Services
             {
                 return null;
             }
+
+            var images = await _context.FileToApis
+                .Where(x => x.KindergartenId == id)
+                .Select(x => new FileToApiDto { Id = x.Id })
+                .ToArrayAsync();
+
+            if (images.Length > 0)
+                await _fileService.RemoveImagesFromApi(images);
 
             _context.Kindergartens.Remove(kindergarten);
             await _context.SaveChangesAsync();
