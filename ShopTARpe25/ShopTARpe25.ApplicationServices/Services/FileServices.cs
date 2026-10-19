@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using ShopTARpe25.Core.Domain;
 using ShopTARpe25.Core.Dto;
@@ -11,44 +10,66 @@ namespace ShopTARpe25.ApplicationServices.Services
     public class FileServices : IFileServices
     {
         private readonly ShopTARpe25Context _context;
-        private readonly IHostEnvironment _environment;
+        private readonly IHostEnvironment _webHost;
 
-        public FileServices(ShopTARpe25Context context, IHostEnvironment environment)
+        public FileServices(ShopTARpe25Context context, IHostEnvironment webHost)
         {
             _context = context;
-            _environment = environment;
+            _webHost = webHost;
         }
 
-        private string UploadsFolder => Path.Combine(_environment.ContentRootPath, "wwwroot", "multipleFileUpload");
-
-        public void FilesToApi(SpaceshipDto dto, Spaceship domain) =>
-            SaveFiles(dto.Files, domain.Id, null);
-
-        public void FilesToApi(KindergartenDto dto, Kindergarten domain) =>
-            SaveFiles(dto.Files, null, domain.Id);
-
-        private void SaveFiles(List<IFormFile>? files, Guid? spaceshipId, Guid? kindergartenId)
+        // Spaceshipi piltide salvestamine – sama ülesehitus nagu algses Spaceshipi lahenduses.
+        public void FilesToApi(SpaceshipDto dto, Spaceship domain)
         {
-            if (files == null || files.Count == 0) return;
-            Directory.CreateDirectory(UploadsFolder);
+            if (dto.Files == null || dto.Files.Count == 0) return;
 
-            foreach (var file in files)
+            string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "wwwroot", "multipleFileUpload");
+            Directory.CreateDirectory(uploadsFolder);
+
+            foreach (var file in dto.Files)
             {
                 if (file == null || file.Length == 0) continue;
-                var safeName = Path.GetFileName(file.FileName);
-                var uniqueFileName = $"{Guid.NewGuid()}_{safeName}";
-                var filePath = Path.Combine(UploadsFolder, uniqueFileName);
+                string uniqueFileName = Guid.NewGuid() + "_" + Path.GetFileName(file.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                    file.CopyTo(stream);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    file.CopyTo(fileStream);
 
-                _context.FileToApis.Add(new FileToApi
+                var path = new FileToApi
                 {
                     Id = Guid.NewGuid(),
                     ExistingFilePath = uniqueFileName,
-                    SpaceshipId = spaceshipId,
-                    KindergartenId = kindergartenId
-                });
+                    SpaceshipId = domain.Id
+                };
+                _context.FileToApis.Add(path);
+            }
+            _context.SaveChanges();
+        }
+
+        // Kindergarteni piltide salvestamine on tehtud sama mustri järgi nagu Spaceshipis.
+        public void FilesToApi(KindergartenDto dto, Kindergarten domain)
+        {
+            if (dto.Files == null || dto.Files.Count == 0) return;
+
+            string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "wwwroot", "multipleFileUpload");
+            Directory.CreateDirectory(uploadsFolder);
+
+            foreach (var file in dto.Files)
+            {
+                if (file == null || file.Length == 0) continue;
+                string uniqueFileName = Guid.NewGuid() + "_" + Path.GetFileName(file.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    file.CopyTo(fileStream);
+
+                var path = new FileToApi
+                {
+                    Id = Guid.NewGuid(),
+                    ExistingFilePath = uniqueFileName,
+                    KindergartenId = domain.Id
+                };
+                _context.FileToApis.Add(path);
             }
             _context.SaveChanges();
         }
@@ -58,7 +79,7 @@ namespace ShopTARpe25.ApplicationServices.Services
             var image = await _context.FileToApis.FirstOrDefaultAsync(x => x.Id == dto.Id);
             if (image == null) return null;
 
-            DeletePhysicalFile(image.ExistingFilePath);
+            DeleteImageFile(image.ExistingFilePath);
             _context.FileToApis.Remove(image);
             await _context.SaveChangesAsync();
             return image;
@@ -67,23 +88,30 @@ namespace ShopTARpe25.ApplicationServices.Services
         public async Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dto)
         {
             var removed = new List<FileToApi>();
+
             foreach (var item in dto)
             {
                 var image = await _context.FileToApis.FirstOrDefaultAsync(x => x.Id == item.Id);
                 if (image == null) continue;
-                DeletePhysicalFile(image.ExistingFilePath);
+
+                DeleteImageFile(image.ExistingFilePath);
                 _context.FileToApis.Remove(image);
                 removed.Add(image);
             }
+
             await _context.SaveChangesAsync();
             return removed;
         }
 
-        private void DeletePhysicalFile(string? fileName)
+        private void DeleteImageFile(string? fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName)) return;
-            var path = Path.Combine(UploadsFolder, Path.GetFileName(fileName));
-            if (File.Exists(path)) File.Delete(path);
+
+            string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "wwwroot", "multipleFileUpload");
+            string filePath = Path.Combine(uploadsFolder, Path.GetFileName(fileName));
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
         }
     }
 }
