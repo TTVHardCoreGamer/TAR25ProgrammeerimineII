@@ -32,17 +32,18 @@ namespace ShopTARpe25.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create() => View(new KindergartenCreateViewModel());
+        public IActionResult Create() => View("CreateUpdate", new KindergartenCreateUpdateViewModel());
 
         [HttpPost]
-        public async Task<IActionResult> Create(KindergartenCreateViewModel vm)
+        public async Task<IActionResult> Create(KindergartenCreateUpdateViewModel vm)
         {
             var dto = new KindergartenDto
             {
-                Id = vm.Id == Guid.Empty ? Guid.NewGuid() : vm.Id,
+                Id = vm.Id ?? Guid.NewGuid(),
                 GroupName = vm.GroupName, ChildrenCount = vm.ChildrenCount,
                 KindergartenName = vm.KindergartenName, TeacherName = vm.TeacherName,
-                Files = vm.Files
+                Files = vm.Files,
+                FileToApiDtos = vm.Image.Select(image => new FileToApiDto { Id = image.ImageId, ExistingFilePath = image.FilePath, KindergartenId = image.KindergartenId }).ToArray()
             };
             await _kindergartenService.Create(dto);
             return RedirectToAction(nameof(Index));
@@ -71,26 +72,26 @@ namespace ShopTARpe25.Controllers
             var kindergarten = await _kindergartenService.DetailsAsync(id);
             if (kindergarten == null) return NotFound();
 
-            var vm = new KindergartenUpdateViewModel
+            var vm = new KindergartenCreateUpdateViewModel
             {
                 Id = kindergarten.Id, GroupName = kindergarten.GroupName,
                 ChildrenCount = kindergarten.ChildrenCount, KindergartenName = kindergarten.KindergartenName,
                 TeacherName = kindergarten.TeacherName, CreatedAt = kindergarten.CreatedAt,
                 UpdatedAt = kindergarten.UpdatedAt
             };
-            vm.Images.AddRange(await GetImages(id));
-            return View(vm);
+            vm.Image.AddRange(await GetImages(id));
+            return View("CreateUpdate", vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(KindergartenUpdateViewModel vm)
+        public async Task<IActionResult> Update(KindergartenCreateUpdateViewModel vm)
         {
             var dto = new KindergartenDto
             {
-                Id = vm.Id, GroupName = vm.GroupName, ChildrenCount = vm.ChildrenCount,
+                Id = vm.Id ?? Guid.Empty, GroupName = vm.GroupName, ChildrenCount = vm.ChildrenCount,
                 KindergartenName = vm.KindergartenName, TeacherName = vm.TeacherName,
                 CreatedAt = vm.CreatedAt, UpdatedAt = vm.UpdatedAt, Files = vm.Files,
-                FileToApiDtos = vm.Images.Select(image => new FileToApiDto
+                FileToApiDtos = vm.Image.Select(image => new FileToApiDto
                 {
                     Id = image.ImageId, ExistingFilePath = image.FilePath,
                     KindergartenId = image.KindergartenId

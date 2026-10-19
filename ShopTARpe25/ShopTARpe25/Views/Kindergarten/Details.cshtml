@@ -1,19 +1,67 @@
 @model ShopTARpe25.Models.Kindergarten.KindergartenDetailsViewModel
 
-<div class="h1">Kindergarten Details</div>
+<h1>Details</h1>
 
 <div>
-    <p><b>Group Name:</b> @Model.GroupName</p>
-    <p><b>Children Count:</b> @Model.ChildrenCount</p>
-    <p><b>Kindergarten Name:</b> @Model.KindergartenName</p>
-    <p><b>Teacher Name:</b> @Model.TeacherName</p>
-    <p><b>Created At:</b> @Model.CreatedAt</p>
-    <p><b>Updated At:</b> @Model.UpdatedAt</p>
+    <h4>Kindergartens</h4>
+    <hr />
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="Id" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Id)
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="GroupName" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.GroupName)
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="ChildrenCount" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.ChildrenCount)
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="KindergartenName" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.KindergartenName)
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="TeacherName" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.TeacherName)
+        </div>
+    </dl>
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="CreatedAt" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </div>
+    </dl>
+
+
+    <dl class="row">
+        <div class="form-group row">
+            <label asp-for="UpdatedAt" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </div>
+    </dl>
+
+    @foreach(var images in Model.Images)
+    {
+        <partial name="_Images" model="images" />
+        <br />
+    }
+
+    <a asp-action="Index" asp-controller="Kindergarten" class="btn btn-danger">Back to List</a>
+
 </div>
-
-@foreach (var image in Model.Images)
-{
-    <img src="~/multipleFileUpload/@image.FilePath" alt="Kindergarten pilt" style="max-width: 220px; max-height: 180px; margin: 8px;" />
-}
-
-<a asp-action="Index" asp-controller="Kindergarten" class="btn btn-secondary">Back to List</a>
