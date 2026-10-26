@@ -1,0 +1,8 @@
+@model ShopTARpe25.Core.Domain.Book
+
+<h2>@Model.Title</h2>
+<p>Autor: @Model.Author</p>
+<p>Aasta: @Model.PublishedYear</p>
+<p>Saadaval: @(Model.IsAvailable ? "Jah" : "Ei")</p>
+<a asp-action="UpdateBookTitle" asp-route-id="@Model.Id" class="btn">Muuda pealkirja</a>
+<a asp-action="Index" class="btn btn-light">Tagasi</a>

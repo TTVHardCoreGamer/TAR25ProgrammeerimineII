@@ -1,0 +1,7 @@
+<h2>Laenuta raamat</h2>
+<form asp-action="LoanBook" method="post">
+    <p><select name="bookId" asp-items="ViewBag.Books"></select></p>
+    <p><select name="readerId" asp-items="ViewBag.Readers"></select></p>
+    <button type="submit">Laenuta</button>
+    <a asp-action="Index" class="btn btn-light">Tagasi</a>
+</form>

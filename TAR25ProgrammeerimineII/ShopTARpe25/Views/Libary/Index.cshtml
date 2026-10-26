@@ -1,0 +1,28 @@
+@model IEnumerable<ShopTARpe25.Core.Domain.Book>
+
+<h2>@(ViewData["Heading"] ?? "Raamatukogu")</h2>
+
+<form method="get" asp-action="Index">
+    <input type="number" name="year" placeholder="Ilmumisaasta (nt 2000)" />
+    <input type="text" name="title" placeholder="Pealkiri" />
+    <button type="submit">Otsi</button>
+    <a asp-action="Index" class="btn btn-light">Kõik</a>
+</form>
+
+<table>
+    <tr><th>Pealkiri</th><th>Autor</th><th>Aasta</th><th>Saadaval</th><th></th></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Author</td>
+            <td>@item.PublishedYear</td>
+            <td>@(item.IsAvailable ? "Jah" : "Ei")</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-light">Vaata</a>
+                <a asp-action="UpdateBookTitle" asp-route-id="@item.Id" class="btn">Muuda pealkirja</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Kustuta</a>
+            </td>
+        </tr>
+    }
+</table>

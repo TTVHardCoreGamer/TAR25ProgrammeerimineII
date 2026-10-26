@@ -1,0 +1,10 @@
+@model ShopTARpe25.Core.Dto.BookDto
+
+<h2>Lisa raamat</h2>
+<form asp-action="Create" method="post">
+    <p><input asp-for="Title" placeholder="Pealkiri" required /></p>
+    <p><input asp-for="Author" placeholder="Autor" required /></p>
+    <p><input asp-for="PublishedYear" placeholder="Ilmumisaasta" required /></p>
+    <button type="submit">Lisa</button>
+    <a asp-action="Index" class="btn btn-light">Tagasi</a>
+</form>

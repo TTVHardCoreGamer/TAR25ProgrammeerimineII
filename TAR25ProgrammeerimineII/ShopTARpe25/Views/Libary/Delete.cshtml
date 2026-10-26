@@ -1,0 +1,17 @@
+@model ShopTARpe25.Core.Domain.Book
+
+<h2>Kas kustutada "@Model.Title"?</h2>
+
+@if (ViewBag.HasActiveLoan == true)
+{
+    <p class="error">Raamat on praegu laenutuses, seda ei saa kustutada. Tagasta raamat enne.</p>
+}
+else
+{
+    <p>Kustutatakse ka selle raamatu tagastatud laenutuste ajalugu.</p>
+    <form asp-action="DeleteConfirmation" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn-danger">Kustuta</button>
+    </form>
+}
+<p><a asp-action="Index" class="btn btn-light">Tagasi</a></p>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raamatukogu</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <nav class="nav">
+        <a asp-controller="Libary" asp-action="Index">Raamatud</a>
+        <a asp-controller="Libary" asp-action="Loaned">Laenutuses</a>
+        <a asp-controller="Libary" asp-action="Create">Lisa raamat</a>
+        <a asp-controller="Libary" asp-action="CreateReader">Lisa lugeja</a>
+        <a asp-controller="Libary" asp-action="LoanBook">Laenuta</a>
+        <a asp-controller="Libary" asp-action="ReaderLoans">Lugeja laenutused</a>
+    </nav>
+    <main>
+        @if (TempData["Error"] != null)
+        {
+            <p class="error">@TempData["Error"]</p>
+        }
+        @RenderBody()
+    </main>
+</body>
+</html>

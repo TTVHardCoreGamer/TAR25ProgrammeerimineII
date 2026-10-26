@@ -1,0 +1,9 @@
+@model ShopTARpe25.Core.Dto.ReaderDto
+
+<h2>Lisa lugeja</h2>
+<form asp-action="CreateReader" method="post">
+    <p><input asp-for="FullName" placeholder="Nimi" required /></p>
+    <p><input asp-for="Email" type="email" placeholder="E-post" required /></p>
+    <button type="submit">Lisa</button>
+    <a asp-action="Index" class="btn btn-light">Tagasi</a>
+</form>

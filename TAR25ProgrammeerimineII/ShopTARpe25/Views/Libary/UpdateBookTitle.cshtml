@@ -1,0 +1,9 @@
+@model ShopTARpe25.Core.Dto.BookDto
+
+<h2>Muuda raamatu pealkirja</h2>
+<form asp-action="UpdateBookTitle" method="post">
+    <input type="hidden" asp-for="Id" />
+    <p><input asp-for="Title" required /></p>
+    <button type="submit">Salvesta</button>
+    <a asp-action="Index" class="btn btn-light">Tagasi</a>
+</form>
