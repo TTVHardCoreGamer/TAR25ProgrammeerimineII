@@ -6,3 +6,21 @@
 <p>Saadaval: @(Model.IsAvailable ? "Jah" : "Ei")</p>
 <a asp-action="UpdateBookTitle" asp-route-id="@Model.Id" class="btn">Muuda pealkirja</a>
 <a asp-action="Index" class="btn btn-light">Tagasi</a>
+
+<html>
+<head>
+    <style>
+            body {
+                background: blue;
+                color: lightblue;
+            }
+            button:hover {            
+                background: cyan;
+                color: blue;
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+    </style>
+</head>
+</html>
