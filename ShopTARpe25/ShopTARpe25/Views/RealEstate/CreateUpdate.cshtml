@@ -1,0 +1,68 @@
+﻿@model ShopTARpe25.Models.RealEstate.RealEstateCreateUpdateViewModel
+
+@if (Model.Id.HasValue)
+{
+    <h1>RealEstate Update</h1>
+}
+else
+{
+    <h1>RealEstate Create</h1>
+}
+
+
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="Id" type="hidden" />
+    <input asp-for="CreatedAt" type="hidden" />
+    <input asp-for="ModifiedAt" type="hidden" />
+
+    <div>
+        <label asp-for="Location" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Location" class="form-control" />
+        </div>
+    </div>
+
+    <div>
+        <label asp-for="BuildingType" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="BuildingType" class="form-control" />
+        </div>
+    </div>
+
+    <div>
+        <label asp-for="BuiltDate" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="BuiltDate" class="form-control" />
+        </div>
+    </div>
+
+    <div>
+        <label asp-for="RoomNumber" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="RoomNumber" class="form-control" />
+        </div>
+    </div>
+
+    <div>
+        <label asp-for="Size" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Size" class="form-control" />
+        </div>
+    </div>
+
+    <hr />
+
+    @if (Model.Id.HasValue)
+    {
+        <input asp-action="update" asp-controller="realestate" type="submit" class="btn btn-primary" value="Update" />
+    }
+    else
+    {
+        <input asp-action="create" asp-controller="realestate" type="submit" class="btn btn-primary" value="Create" />
+    }
+
+    <a asp-action="Index" asp-controller="realestate" class="btn btn-secondary">Back to List</a>
+
+</form>
+
+

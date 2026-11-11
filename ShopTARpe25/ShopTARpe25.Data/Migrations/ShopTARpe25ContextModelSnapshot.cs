@@ -17,7 +17,7 @@ namespace ShopTARpe25.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -31,12 +31,49 @@ namespace ShopTARpe25.Data.Migrations
                     b.Property<string>("ExistingFilePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("RealEstateId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("SpaceshipId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FileToApis");
+                    b.ToTable("FileToApis", (string)null);
+                });
+
+            modelBuilder.Entity("ShopTARpe25.Core.Domain.RealEstate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BuildingType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("BuiltDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("RoomNumber")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Size")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RealEstates", (string)null);
                 });
 
             modelBuilder.Entity("ShopTARpe25.Core.Domain.Spaceship", b =>
@@ -70,7 +107,7 @@ namespace ShopTARpe25.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Spaceships");
+                    b.ToTable("Spaceships", (string)null);
                 });
 #pragma warning restore 612, 618
         }
