@@ -68,7 +68,16 @@ namespace ShopTARpe25.Controllers
                 BuildingType = vm.BuildingType,
                 BuiltDate = vm.BuiltDate,
                 RoomNumber = vm.RoomNumber,
-                Size = vm.Size
+                Size = vm.Size,
+                Files = vm.Files,
+                Image = vm.Image
+                   .Select(x => new FileToDatabaseDto
+                   {
+                       Id = x.ImageId,
+                       ImageData = x.ImageData,
+                       ImageTitle = x.ImageTitle,
+                       RealEstateId = x.RealEstateId
+                   }).ToArray()
             };
 
             //kutsuda teenuse meetodit, mis salvestab andmed andmebaasi
