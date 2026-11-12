@@ -121,10 +121,18 @@ namespace ShopTARpe25.ApplicationServices.Services
                     using (var target = new MemoryStream())
                     {
                         //FileToDatabase
+                        FileToDatabase files = new FileToDatabase()
+                        {
+                            Id = Guid.NewGuid(),
+                            ImageTitle = file.FileName,
+                            RealEstateId = domain.Id,
+                        };
+
+                        file.CopyTo(target);
+                        files.ImageData = target.ToArray();
+
+                        _context.FileToDatabases.Add(files);
                     }
-
-
-
                 }
             }
         }
