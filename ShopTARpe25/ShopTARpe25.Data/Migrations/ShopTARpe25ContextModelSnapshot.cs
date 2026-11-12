@@ -31,15 +31,12 @@ namespace ShopTARpe25.Data.Migrations
                     b.Property<string>("ExistingFilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RealEstateId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("SpaceshipId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("FileToApis", (string)null);
+                    b.ToTable("FileToApis");
                 });
 
             modelBuilder.Entity("ShopTARpe25.Core.Domain.RealEstate", b =>
@@ -73,7 +70,7 @@ namespace ShopTARpe25.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RealEstates", (string)null);
+                    b.ToTable("RealEstates");
                 });
 
             modelBuilder.Entity("ShopTARpe25.Core.Domain.Spaceship", b =>
@@ -107,7 +104,7 @@ namespace ShopTARpe25.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Spaceships", (string)null);
+                    b.ToTable("Spaceships");
                 });
 #pragma warning restore 612, 618
         }
