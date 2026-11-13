@@ -107,6 +107,8 @@ namespace ShopTARpe25.Controllers
                 return NotFound();
             }
 
+            RealEstateImageViewModel[] images = await FileFromDatabase(id);
+
             //tuleb teha viewModel ja see siin välja kutsuda
             //ära map-ida vm ja domain
             var vm = new RealEstateDetailsViewModel();
