@@ -9,74 +9,57 @@ else
     <h1>RealEstate Create</h1>
 }
 
+<div>
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="CreatedAt" type="hidden" />
+        <input asp-for="ModifiedAt" type="hidden" />
 
-<form method="post" enctype="multipart/form-data">
-    <input asp-for="Id" type="hidden" />
-    <input asp-for="CreatedAt" type="hidden" />
-    <input asp-for="ModifiedAt" type="hidden" />
-
-    <div>
-        <label asp-for="Location" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Location" class="form-control" />
+        <div class="form-group">
+            <label asp-for="Area" class="control-label"></label>
+            <input asp-for="Area" class="form-control" />
+            <span asp-validation-for="Area" class="text-danger"></span>
         </div>
-    </div>
 
-    <div>
-        <label asp-for="BuildingType" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
+        <div class="form-group">
+            <label asp-for="Address" class="control-label"></label>
+            <input asp-for="Address" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="RoomNumber" class="control-label"></label>
+            <input asp-for="RoomNumber" class="form-control" />
+            <span asp-validation-for="RoomNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="BuildingType" class="control-label"></label>
             <input asp-for="BuildingType" class="form-control" />
         </div>
-    </div>
 
-    <div>
-        <label asp-for="BuiltDate" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="BuiltDate" class="form-control" />
-        </div>
-    </div>
-
-    <div>
-        <label asp-for="RoomNumber" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="RoomNumber" class="form-control" />
-        </div>
-    </div>
-
-    <div>
-        <label asp-for="Size" class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <input asp-for="Size" class="form-control" />
-        </div>
-    </div>
-
-    <hr />
-
-    <div class="form-group">
-        <label asp-for="Files" class="control-label"></label>
-        <input class="form-control" asp-for="Files" multiple type="file"/>
-    </div>
-
-
-
-    <div>
-        @foreach (var images in Model.Image)
-            {
-                <partial name="_Images model="images"/>
-            }
+        <div class="form-group">
+            <label asp-for="Files" class="control-label"></label>
+            <input class="form-control" asp-for="Files" multiple type="file" />
         </div>
 
-    @if (Model.Id.HasValue)
-    {
-        <input asp-action="update" asp-controller="realestate" type="submit" class="btn btn-primary" value="Update" />
-    }
-    else
-    {
-        <input asp-action="create" asp-controller="realestate" type="submit" class="btn btn-primary" value="Create" />
-    }
-
-    <a asp-action="Index" asp-controller="realestate" class="btn btn-secondary">Back to List</a>
-
-</form>
+        <div>
+            @foreach (var images in Model.Image)
+                {
+                    <partial name="_Images" model="images"/>
+                }
+        </div>
 
 
+        @if (Model.Id.HasValue)
+        {
+            <input asp-action="update" asp-controller="realEstate" type="submit" class="btn btn-success" value="Update" />
+        }
+        else
+        {
+            <input asp-action="create" asp-controller="realEstate" type="submit" class="btn btn-success" value="Create" />
+        }
+
+        <a asp-action="Index" asp-controller="realEstate" class="btn btn-success">Back</a>
+    </form>
+</div>

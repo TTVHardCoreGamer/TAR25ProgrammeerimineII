@@ -20,68 +20,68 @@ namespace ShopTARpe25.ApplicationServices.Services
         {
             _context = context;
             _fileServices = fileServices;
-
         }
+
 
         public async Task<RealEstate> Create(RealEstateDto dto)
         {
-            RealEstate domain = new();
+            RealEstate domain = new RealEstate();
 
             domain.Id = Guid.NewGuid();
-            domain.Location = dto.Location;
-            domain.BuildingType = dto.BuildingType;
-            domain.BuiltDate = dto.BuiltDate;
+            domain.Area = dto.Area;
+            domain.Address = dto.Address;
             domain.RoomNumber = dto.RoomNumber;
-            domain.Size = dto.Size;
+            domain.BuildingType = dto.BuildingType;
             domain.CreatedAt = DateTime.Now;
             domain.ModifiedAt = DateTime.Now;
 
-            
+            //kui ankeedis on pildid, siis kutsu faili salvestamine v'lja
+            if (dto.Files != null)
+            {
+                _fileServices.UploadFilesToDatabase(dto, domain);
+            }
 
-            await _context.RealEstates.AddAsync(domain);
+            await _context.Realestates.AddAsync(domain);
             await _context.SaveChangesAsync();
 
             return domain;
         }
 
-        public async Task<RealEstate> DetailsAsync(Guid id)
+        public async Task<RealEstate> Update(RealEstateDto dto)
         {
-            var result = await _context.RealEstates
+            RealEstate domain = new RealEstate();
+
+            domain.Id = dto.Id;
+            domain.Area = dto.Area;
+            domain.Address = dto.Address;
+            domain.RoomNumber = dto.RoomNumber;
+            domain.BuildingType = dto.BuildingType;
+            domain.CreatedAt = dto.CreatedAt;
+            domain.ModifiedAt = DateTime.Now;
+
+            _context.Realestates.Update(domain);
+            await _context.SaveChangesAsync();
+
+            return domain;
+        }
+
+        public async Task<RealEstate> DetailAsync(Guid id)
+        {
+            var result = await _context.Realestates
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return result;
         }
 
-        public async Task<RealEstate> Update(RealEstateDto dto)
-        {
-            RealEstate realEstate = new();
-
-            realEstate.Id = dto.Id;
-            realEstate.Location = dto.Location;
-            realEstate.BuildingType = dto.BuildingType;
-            realEstate.BuiltDate = dto.BuiltDate;
-            realEstate.RoomNumber = dto.RoomNumber;
-            realEstate.Size = dto.Size;
-            realEstate.CreatedAt = dto.CreatedAt;
-            realEstate.ModifiedAt = DateTime.Now;
-
-            if (dto.Files != null)
-            {
-                _fileServices.UploadFilesToDataBase(dto, realEstate);
-            }
-
-            _context.RealEstates.Update(realEstate);
-            await _context.SaveChangesAsync();
-
-            return realEstate;
-        }
-
         public async Task<RealEstate> Delete(Guid id)
         {
-            var result = await _context.RealEstates
+            var result = await _context.Realestates
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            _context.RealEstates.Remove(result);
+            await _context.Realestates
+                .Where(x => x.Id == id)
+                .ExecuteDeleteAsync();
+
             await _context.SaveChangesAsync();
 
             return result;

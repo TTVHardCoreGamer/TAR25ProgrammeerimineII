@@ -1,6 +1,7 @@
 ﻿using ShopTARpe25.Core.Domain;
 using ShopTARpe25.Core.Dto;
 
+
 namespace ShopTARpe25.Core.ServiceInterface
 {
     public interface IFileServices
@@ -8,6 +9,6 @@ namespace ShopTARpe25.Core.ServiceInterface
         void FilesToApi(SpaceshipDto dto, Spaceship domain);
         Task<FileToApi> RemoveImageFromApi(FileToApiDto dto);
         Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dto);
-        void UploadFilesToDataBase(RealEstateDto dto, RealEstate domain);
+        void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain);
     }
 }

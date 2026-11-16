@@ -3,9 +3,8 @@
 <h1>Details</h1>
 
 <div>
-    <h4>RealEstates</h4>
+    <h4>RealEstate</h4>
     <hr />
-
     <dl class="row">
         <div class="form-group row">
             <label asp-for="Id" class="col-sm-2 col-form-label"></label>
@@ -15,22 +14,15 @@
 
     <dl class="row">
         <div class="form-group row">
-            <label asp-for="Location" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.Location)
+            <label asp-for="Area" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Area)
         </div>
     </dl>
 
     <dl class="row">
         <div class="form-group row">
-            <label asp-for="BuildingType" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.BuildingType)
-        </div>
-    </dl>
-
-    <dl class="row">
-        <div class="form-group row">
-            <label asp-for="BuiltDate" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.BuiltDate)
+            <label asp-for="Address" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Address)
         </div>
     </dl>
 
@@ -43,8 +35,8 @@
 
     <dl class="row">
         <div class="form-group row">
-            <label asp-for="Size" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.Size)
+            <label asp-for="BuildingType" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.BuildingType)
         </div>
     </dl>
 
@@ -62,6 +54,12 @@
         </div>
     </dl>
 
-    <a asp-action="Index" asp-controller="realestate" class="btn btn-danger">Back to List</a>
+    @foreach (var images in Model.Images)
+    {
+        <partial name="_Images" model="images" />
+        <br />
+    }
 
+    <hr />
+    <a asp-action="Index" asp-controller="realEstate" class="btn btn-danger">Back</a>
 </div>

@@ -1,11 +1,11 @@
 ﻿@model ShopTARpe25.Models.RealEstate.RealEstateDeleteViewModel
 
+
 <h1>Delete</h1>
 
 <div>
     <h4>RealEstate</h4>
     <hr />
-
     <dl class="row">
         <div class="form-group row">
             <label asp-for="Id" class="col-sm-2 col-form-label"></label>
@@ -15,22 +15,15 @@
 
     <dl class="row">
         <div class="form-group row">
-            <label asp-for="Location" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.Location)
+            <label asp-for="Area" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Area)
         </div>
     </dl>
 
     <dl class="row">
         <div class="form-group row">
-            <label asp-for="BuildingType" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.BuildingType)
-        </div>
-    </dl>
-
-    <dl class="row">
-        <div class="form-group row">
-            <label asp-for="BuiltDate" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.BuiltDate)
+            <label asp-for="Address" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Address)
         </div>
     </dl>
 
@@ -43,8 +36,8 @@
 
     <dl class="row">
         <div class="form-group row">
-            <label asp-for="Size" class="col-sm-2 col-form-label"></label>
-            @Html.DisplayFor(model => model.Size)
+            <label asp-for="BuildingType" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.BuildingType)
         </div>
     </dl>
 
@@ -64,11 +57,8 @@
 
     <hr />
     <form asp-action="DeleteConfirmation">
-        <input type="hidden" asp-for="Id"/>
-        <input type="submit" value="Delete" class="btn btn-danger"/>
-        <a asp-action="Index" asp-controller="realestate"class="btn btn-success">Back</a>
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" asp-controller="realEstate" class="btn btn-success">Back</a>
     </form>
-
 </div>
-
-

@@ -109,13 +109,13 @@ namespace ShopTARpe25.ApplicationServices.Services
             return null;
         }
 
-        public void UploadFilesToDataBase(RealEstateDto dto, RealEstate domain)
+        public void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain)
         {
             //toimub kontroll, kas vähemalt üks fail või mitu
             if (dto.Files != null && dto.Files.Count > 0)
             {
                 //tuleb kasutada foreachi, et mitu faili ülesse laadida
-                foreach (var file in dto.Files)
+                foreach(var file in dto.Files)
                 {
                     //foreachi sees tuleb kasutada using-t
                     using (var target = new MemoryStream())
