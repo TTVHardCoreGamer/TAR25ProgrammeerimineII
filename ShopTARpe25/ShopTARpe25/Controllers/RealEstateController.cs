@@ -91,6 +91,8 @@ namespace ShopTARpe25.Controllers
                 return NotFound();
             }
 
+            RealEstateImageViewModel[] images = await FileFromDatabase(id);
+
             var vm = new RealEstateCreateUpdateViewModel
             {
                 Id = result.Id,
