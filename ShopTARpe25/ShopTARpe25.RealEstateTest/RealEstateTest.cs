@@ -70,6 +70,7 @@ namespace ShopTARpe25.RealEstateTest
             
 
             // assert
+            //võrdlen Id-sid, kas kustutasin selle ära, mis oli andmebaasis
             Assert.Equal(addRealEstate.Id, deleteRealEstate.Id);
         }
 
