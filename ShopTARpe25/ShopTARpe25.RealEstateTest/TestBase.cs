@@ -1,94 +1,84 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using ShopTARpe25.ApplicationServices.Services;
 using ShopTARpe25.Core.ServiceInterface;
 using ShopTARpe25.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using ShopTARpe25.RealEstateTest.Macros;
+using ShopTARpe25.RealEstateTest.Mock;
+
 
 namespace ShopTARpe25.RealEstateTest
 {
-    // Kõigi testide ühine baasklass, kus seadistatakse DI konteiner ja andmebaas.
-    // abstract = sellest ei saa objekti luua, saab ainult pärida.
+    //iga koodirida ära kommenteerida, et mis mida meetod teeb ja miks seda on vaja?
     public abstract class TestBase
     {
-        // DI konteiner, millest testid küsivad teenuseid, ilma et peaks neid käsitsi new-ga looma.
-        // protected = nähtav ainult sellele klassile ja pärinevatele testklassidele.
         protected IServiceProvider ServiceProvider { get; set; }
 
-        // Konstruktor: xUnit loob igale testile uue objekti, seega käivitub see enne iga testi
-        // ja iga test saab puhta konteineri ning tühja andmebaasi.
         protected TestBase()
         {
-            // Loob tühja teenuste kogumi, kuhu hakatakse teenuseid registreerima.
+            //loob uue teenuse kogu vajalikuks teenuste testimiseks
             var services = new ServiceCollection();
-
-            // Registreerib teenused (eraldi meetodis, et seda saaks üle kirjutada).
+            //kutsub välja meetodi, mis lisab teenused ja vajalikud sõltuvused
             SetupServices(services);
-
-            // Registreerimine on alles plaan, siin tehakse sellest töötav konteiner.
+            //selle kaudu saab teenuseid küsida
             ServiceProvider = services.BuildServiceProvider();
         }
 
-        // Registreerib teenused, mida testid vajavad.
-        // virtual = testklass saab üle kirjutada, et lisada teenuseid või panna mock.
-        // Üle kirjutades kutsu ka base.SetupServices(services), muidu kaovad siinsed registreeringud.
         public virtual void SetupServices(IServiceCollection services)
         {
-            // Küsides IRealEstateServices saad RealEstateServices objekti.
-            // Scoped = üks objekt scope'i kohta, testis praktiliselt üks.
             services.AddScoped<IRealEstateServices, RealEstateServices>();
+            //miks pidi lisama kaks servict juurde, kuigi me tahame testida ainult Realestate CRUDi?
+            //sellepärast, et see oli seotud failide lisamisega ja failide lisamine omakorda oli seoses
+            //IHostEnvironmentiga
+            services.AddScoped<IFileServices, FileServices>();
+            services.AddScoped<IHostEnvironment, MockIHostEnvironment>();
 
-            // Registreerib andmebaasi konteksti, mida RealEstateServices vajab.
+            //registreerib andmebaasi konteksti
             services.AddDbContext<ShopTARpe25Context>(x =>
             {
-                // Andmebaas mälus: kiire ja ei puuduta päris SQL Serverit.
-                // Sama nimega ("TEST") andmebaasid jagavad andmeid.
+                //seadistab kasutama mälusisest andmebaasi nimega TEST, et testimisel kasutada 
+                //ilma päris andmebaasita
                 x.UseInMemoryDatabase("TEST");
 
-                // In-memory ei toeta tehinguid ja annaks muidu vea; see rida ignoreerib hoiatust.
-                x.ConfigureWarnings(b =>
-                    b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                //eirab hoiatust, et mälusisene DB ei toeta tehinguid samamoodi nagu päris andmebaas
+                x.ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             });
-
-            // Registreerib automaatselt kõik macro klassid (vt RegisterMacros).
+            //kutsub välja macrode klassi
             RegisterMacros(services);
         }
 
-        // Ressursside vabastamiseks, praegu tühi.
-        // xUnit kutsub seda ainult siis, kui klass implementeerib IDisposable, mis siin puudub,
-        // seega seda ei kutsuta kunagi.
+        //vabastab ressursid peale kasutamist
         public void Dispose()
         {
 
         }
 
-        // Lühike abimeetod: Svc<IRealEstateServices>() asemel ServiceProvider.GetService<...>().
+        //abimeetod, millega klass ja selle alamklassid saavad teenuse tüübi järgi küsida
         protected T Svc<T>()
         {
-            // Küsib konteinerist teenuse. GetService tagastab null, kui teenust pole;
-            // GetRequiredService viskaks kohe selge vea.
+            //otsib teenusepakkuja tüüpi
             return ServiceProvider.GetService<T>();
         }
 
-        // Leiab kõik IMacros-i implementeerivad klassid ja registreerib need DI-sse,
-        // et uut macrot lisades ei peaks midagi käsitsi registreerima.
-        // Macro = abiklass korduvaks testitegevuseks (nt test-kinnisvara loomine).
+        //abimeetod makrode leidmsieks ja registreerimiseks
         private void RegisterMacros(IServiceCollection services)
         {
-            // Liides, mille implementeerijaid otsitakse.
+            //saaks reflektsiooniga otsingus kasutada
             var macroBaseType = typeof(IMacros);
 
-            // Reflection: võtab assembly tüübid, jätab alles IMacros-i implementeerijad,
-            // mis pole liides ega abstract (neist ei saa objekti luua).
+            //loeb kokku kõik tüübid sellest assemblyst, kus Macro on määratletud
             var macros = macroBaseType.Assembly.GetTypes()
+                //valib tööbid, mis rakendavad IMacros liidest, aga ei ole ise liidesed
+                //ega abstraktsed klassid
                 .Where(t => macroBaseType.IsAssignableFrom(t)
                 && !t.IsInterface && !t.IsAbstract);
 
-            // Registreerib iga leitud macro konkreetse klassina.
+            //käib leitud makrode classid ükshaaval läbi
             foreach (var macro in macros)
             {
-                // Singleton = üks objekt konteineri kogu eluea jooksul.
+                //kasutab ühte makro eksemplaari
                 services.AddSingleton(macro);
             }
         }
