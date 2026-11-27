@@ -96,10 +96,7 @@ namespace ShopTARpe25.ApplicationServices.Services
             //aga pilte ei kustutata 
             //vaadake Spaceship teenusklassi
             await _fileServices.RemoveImagesFromDatabase(images);
-            await _context.Realestates
-                .Where(x => x.Id == id)
-                .ExecuteDeleteAsync();
-
+            _context.Realestates.Remove(result);
             await _context.SaveChangesAsync();
 
             return result;
