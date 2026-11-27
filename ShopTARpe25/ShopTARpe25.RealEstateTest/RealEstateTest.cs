@@ -132,7 +132,34 @@ namespace ShopTARpe25.RealEstateTest
         [Fact]
         public async Task Should_UpdateRealEstate_WhenUpdateDataVersion2()
         {
+            //tuleb kasutada MockRealEstateDataUpdate ja MockRealEstateData2
+            RealEstateDto dto = MockRealEstateData2();
+            RealEstateDto updateDto = MockRealEstateDataUpdate();
 
+            var createRealEstate = await Svc<IRealEstateServices>().Create(dto);
+            var result = await Svc<IRealEstateServices>().Update(updateDto);
+
+            //assert
+            Assert.DoesNotMatch(createRealEstate.Address, result.Address);
+            Assert.NotEqual(createRealEstate.ModifiedAt, result.ModifiedAt);
+        }
+
+        //kasutame ankeeti, kus kõik andmed on null 
+        //tuleb kasutada create ja update ära
+        [Fact]
+        public async Task ShouldNot_UpdateRealEstate_WhenDidNotUpdateData()
+        {
+            //arrange
+            RealEstateDto dto = MockRealEstateData();
+            RealEstateDto nullDto = MockNULLRealEstateData();
+
+            //act
+            var createRealEstate = await Svc<IRealEstateServices>().Create(dto);
+            var result = await Svc<IRealEstateServices>().Update(nullDto);
+
+            //assert
+            Assert.NotEqual(createRealEstate.Id, result.Id);
+            Assert.NotEqual(createRealEstate.Address, result.Address);
         }
 
         private RealEstateDto MockRealEstateData()
@@ -171,6 +198,19 @@ namespace ShopTARpe25.RealEstateTest
                 BuildingType = "Hideout",
                 CreatedAt = DateTime.Now,
                 ModifiedAt = DateTime.Now
+            };
+        }
+
+        private RealEstateDto MockNULLRealEstateData()
+        {
+            return new RealEstateDto
+            {
+                Area = null,
+                Address = null,
+                RoomNumber = 0,
+                BuildingType = null,
+                CreatedAt = null,
+                ModifiedAt = null
             };
         }
     }
